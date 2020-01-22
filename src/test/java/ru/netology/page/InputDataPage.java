@@ -2,13 +2,11 @@ package ru.netology.page;
 
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import ru.netology.data.DataHelperCard;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InputDataPage {
     private static String website = System.getProperty("host");
@@ -47,13 +45,6 @@ public class InputDataPage {
         buyCreditButton.click();
         payCreditByCard.shouldBe(visible);
     }
-
-    /*@Step("Ввод данных, если ожидаемый текст совпал с актуальным")
-    public static void inputByCompareText(String expected) {
-        $(".input__sub").shouldHave(text(expected));
-        String actual = $(".input__sub").innerText();
-        assertEquals(expected, actual);
-    }*/
 
     @Step("Заполнить поле 'номер карты'")
     public static void setCardNumber(String number) {
