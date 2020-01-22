@@ -8,7 +8,6 @@ build/
 data_mysql/
 data_pg/
 /node_container/
-/.allure/
 
 ### STS ###
 .apt_generated
@@ -25,7 +24,6 @@ data_pg/
 *.iml
 *.ipr
 out/
-src/
 
 ### NetBeans ###
 /nbproject/private/
@@ -48,6 +46,6 @@ src/
 
 ### Exclusions ###
 !gradle/wrapper/gradle-wrapper.jar
-#!**/src/main/**
-#!**/src/test/**
+!**/src/main/**
+!**/src/test/**
 !artifacts/aqa-shop.jar
