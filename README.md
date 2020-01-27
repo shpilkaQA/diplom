@@ -5,7 +5,11 @@
 
 ## Документы:
 
-в процессе
+_[План автоматизации](https://github.com/shpilkaQA/diplom/blob/master/documents/Plan.md)_
+
+_[Отчёт о проведённом тестировании](https://github.com/shpilkaQA/diplom/blob/master/documents/Report.md)_
+
+_[Отчёт о проведённой автоматизации](https://github.com/shpilkaQA/diplom/blob/master/documents/Summary.md)_
 
 ## Инструкция по запуску:
 

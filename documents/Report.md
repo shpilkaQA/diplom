@@ -24,7 +24,7 @@
 * Успешных: 20 *(23,8%)*
 * Неуспешных: 64 *(76,2%)*
 
-![](documents/pic/allure_1.jpg)
+![](https://raw.githubusercontent.com/shpilkaQA/diplom/master/documents/pic/allure_1.jpg)
 
 ## Общие рекомендации
 
