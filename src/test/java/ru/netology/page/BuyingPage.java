@@ -8,7 +8,7 @@ import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 
-public class InputDataPage {
+public class BuyingPage {
     private static String website = System.getProperty("host");
     private static SelenideElement cardNumberField = $$(".input__inner").findBy(text("Номер карты"))
             .$(".input__control");
@@ -71,7 +71,7 @@ public class InputDataPage {
         cvcOrCvvField.setValue(cvc);
     }
 
-    @Step("Нажать кнопуку 'продолжть'")
+    @Step("Нажать кнопку 'продолжить'")
     public static void clickContinueButton() {
         continueButton.click();
     }

@@ -8,6 +8,7 @@ build/
 data_mysql/
 data_pg/
 /node_container/
+.allure/
 
 ### STS ###
 .apt_generated

@@ -4,65 +4,79 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.DataHelperCard;
 import ru.netology.data.DataHelperDB;
-import ru.netology.page.InputDataPage;
+import ru.netology.page.BuyingPage;
 
 import java.sql.SQLException;
 
-public class TestBuyTravelHappyPath extends TestAfterBefore {
+public class TestBuyTravelHappyPath extends TestBase {
 
     @Test
     @DisplayName("Поля заполнены верно - успешная покупка утвержденной картой")
     void buyByApprovedCard() throws SQLException {
-        InputDataPage.buy();
-        InputDataPage.setCardNumber(String.valueOf(DataHelperCard.getApprovedCardInfo()));
-        InputDataPage.setCardMonth(String.valueOf(DataHelperCard.getValidMonthInfo()));
-        InputDataPage.setCardYear(String.valueOf(DataHelperCard.getValidYearInfo()));
-        InputDataPage.setCardOwner(String.valueOf(DataHelperCard.getValidOwnerInfo()));
-        InputDataPage.setCardCVV(String.valueOf(DataHelperCard.getValidCvcInfo()));
-        InputDataPage.clickContinueButton();
-        InputDataPage.checkMessageSuccessfully();
+        BuyingPage.buy();
+        BuyingPage.setCardNumber(String.valueOf(DataHelperCard.getApprovedCardInfo()));
+        BuyingPage.setCardMonth(String.valueOf(DataHelperCard.getValidMonthInfo()));
+        BuyingPage.setCardYear(String.valueOf(DataHelperCard.getValidYearInfo()));
+        BuyingPage.setCardOwner(String.valueOf(DataHelperCard.getValidOwnerInfo()));
+        BuyingPage.setCardCVV(String.valueOf(DataHelperCard.getValidCvcInfo()));
+        BuyingPage.clickContinueButton();
+        BuyingPage.checkMessageSuccessfully();
         DataHelperDB.verifyStatusWithApprovedBuy();
     }
 
     @Test
     @DisplayName("Поля заполнены верно - успешная покупка в кредит утвержденной картой")
     void buyInCreditByApprovedCard() throws SQLException {
-        InputDataPage.buyInCredit();
-        InputDataPage.setCardNumber(String.valueOf(DataHelperCard.getApprovedCardInfo()));
-        InputDataPage.setCardMonth(String.valueOf(DataHelperCard.getValidMonthInfo()));
-        InputDataPage.setCardYear(String.valueOf(DataHelperCard.getValidYearInfo()));
-        InputDataPage.setCardOwner(String.valueOf(DataHelperCard.getValidOwnerInfo()));
-        InputDataPage.setCardCVV(String.valueOf(DataHelperCard.getValidCvcInfo()));
-        InputDataPage.clickContinueButton();
-        InputDataPage.checkMessageSuccessfully();
+        BuyingPage.buyInCredit();
+        BuyingPage.setCardNumber(String.valueOf(DataHelperCard.getApprovedCardInfo()));
+        BuyingPage.setCardMonth(String.valueOf(DataHelperCard.getValidMonthInfo()));
+        BuyingPage.setCardYear(String.valueOf(DataHelperCard.getValidYearInfo()));
+        BuyingPage.setCardOwner(String.valueOf(DataHelperCard.getValidOwnerInfo()));
+        BuyingPage.setCardCVV(String.valueOf(DataHelperCard.getValidCvcInfo()));
+        BuyingPage.clickContinueButton();
+        BuyingPage.checkMessageSuccessfully();
         DataHelperDB.verifyStatusWithApprovedByCredit();
     }
 
     @Test
     @DisplayName("Поля заполнены верно - отказ в покупке отклоненной картой")
     void rejectBuyByDeclinedCard() throws SQLException {
-        InputDataPage.buy();
-        InputDataPage.setCardNumber(String.valueOf(DataHelperCard.getDeclinedCardInfo()));
-        InputDataPage.setCardMonth(String.valueOf(DataHelperCard.getValidMonthInfo()));
-        InputDataPage.setCardYear(String.valueOf(DataHelperCard.getValidYearInfo()));
-        InputDataPage.setCardOwner(String.valueOf(DataHelperCard.getValidOwnerInfo()));
-        InputDataPage.setCardCVV(String.valueOf(DataHelperCard.getValidCvcInfo()));
-        InputDataPage.clickContinueButton();
-        InputDataPage.checkMessageError();
+        BuyingPage.buy();
+        BuyingPage.setCardNumber(String.valueOf(DataHelperCard.getDeclinedCardInfo()));
+        BuyingPage.setCardMonth(String.valueOf(DataHelperCard.getValidMonthInfo()));
+        BuyingPage.setCardYear(String.valueOf(DataHelperCard.getValidYearInfo()));
+        BuyingPage.setCardOwner(String.valueOf(DataHelperCard.getValidOwnerInfo()));
+        BuyingPage.setCardCVV(String.valueOf(DataHelperCard.getValidCvcInfo()));
+        BuyingPage.clickContinueButton();
+        BuyingPage.checkMessageError();
         DataHelperDB.verifyStatusWithDeclinedBuy();
     }
 
     @Test
     @DisplayName("Поля заполнены верно - отказ в покупке в кредит отклоненной картой")
     void rejectBuyInCreditDeclinedCard() throws SQLException {
-        InputDataPage.buyInCredit();
-        InputDataPage.setCardNumber(String.valueOf(DataHelperCard.getDeclinedCardInfo()));
-        InputDataPage.setCardMonth(String.valueOf(DataHelperCard.getValidMonthInfo()));
-        InputDataPage.setCardYear(String.valueOf(DataHelperCard.getValidYearInfo()));
-        InputDataPage.setCardOwner(String.valueOf(DataHelperCard.getValidOwnerInfo()));
-        InputDataPage.setCardCVV(String.valueOf(DataHelperCard.getValidCvcInfo()));
-        InputDataPage.clickContinueButton();
-        InputDataPage.checkMessageError();
+        BuyingPage.buyInCredit();
+        BuyingPage.setCardNumber(String.valueOf(DataHelperCard.getDeclinedCardInfo()));
+        BuyingPage.setCardMonth(String.valueOf(DataHelperCard.getValidMonthInfo()));
+        BuyingPage.setCardYear(String.valueOf(DataHelperCard.getValidYearInfo()));
+        BuyingPage.setCardOwner(String.valueOf(DataHelperCard.getValidOwnerInfo()));
+        BuyingPage.setCardCVV(String.valueOf(DataHelperCard.getValidCvcInfo()));
+        BuyingPage.clickContinueButton();
+        BuyingPage.checkMessageError();
         DataHelperDB.verifyStatusWithDeclinedByCredit();
+    }
+
+    @Test
+    @DisplayName("Проверка заполнения полей таблиц БД")
+    void verifyDB() throws SQLException {
+        DataHelperDB.verifyPayment();
+        DataHelperDB.verifyCredit();
+        DataHelperDB.verifyOrder();
+    }
+
+    @Test
+    @DisplayName("Очистка таблиц БД")
+    void clearAll() throws SQLException {
+        DataHelperDB.clearDB();
     }
 }

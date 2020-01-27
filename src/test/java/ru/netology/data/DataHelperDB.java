@@ -5,6 +5,9 @@ import lombok.*;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
+import ru.netology.models.CreditDataModel;
+import ru.netology.models.OrderDataModel;
+import ru.netology.models.PaymentDataModel;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -57,56 +60,6 @@ public class DataHelperDB {
         runner.update(getConnectionDB(), deleteCredit);
         runner.update(getConnectionDB(), deletePayment);
         runner.update(getConnectionDB(), deleteOrder);
-        System.out.println("Таблицы очищены");
-    }
-    /*@Step("Очистка БД")
-    public static void clearDB() throws SQLException {
-        val runner = new QueryRunner();
-        val deleteCredit = "DELETE FROM credit_request_entity;";
-        val deletePayment = "DELETE FROM payment_entity;";
-        val deleteOrder = "DELETE FROM order_entity;";
-        runner.update(getConnectionDB(), deleteCredit);
-        runner.update(getConnectionDB(), deletePayment);
-        runner.update(getConnectionDB(), deleteOrder);
-        System.out.println("Таблицы очищены");
-    }*/
-    /*public static void clearDB() throws SQLException {
-        val runner = new QueryRunner();
-        runner.update(getConnectionDB(), "DELETE FROM credit_request_entity;");
-        runner.update(getConnectionDB(), "DELETE FROM payment_entity;");
-        runner.update(getConnectionDB(), "DELETE FROM order_entity;");
-        System.out.println("Таблицы очищены");
-    }*/
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class CreditDataInfo {
-        private String id;
-        private String bank_id;
-        private String created;
-        private String status;
-    }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class OrderDataInfo {
-        private String id;
-        private String created;
-        private String credit_id;
-        private String payment_id;
-    }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class PaymentDataInfo {
-        private String id;
-        private int amount;
-        private String created;
-        private String status;
-        private String transaction_id;
     }
 
     @Step("Проверка наличия записи в базе о покупке с выводом статуса карты")
@@ -127,49 +80,49 @@ public class DataHelperDB {
 
     @Step("Сверка со статусом 'APPROVED'. Раздел 'Купить'")
     public static void verifyStatusWithApprovedBuy() throws SQLException {
-        val status = DataHelperDB.verifyOrderByPayment();
+        val status = verifyOrderByPayment();
         assertEquals("APPROVED", status);
     }
 
     @Step("Сверка со статусом 'DECLINED'. Раздел 'Купить'")
     public static void verifyStatusWithDeclinedBuy() throws SQLException {
-        val status = DataHelperDB.verifyOrderByPayment();
+        val status = verifyOrderByPayment();
         assertEquals("DECLINED", status);
     }
 
     @Step("Сверка со статусом 'APPROVED'. Раздел 'Купить в кредит'")
     public static void verifyStatusWithApprovedByCredit() throws SQLException {
-        val status = DataHelperDB.verifyOrderByPaymentByCredit();
+        val status = verifyOrderByPaymentByCredit();
         assertEquals("APPROVED", status);
     }
 
     @Step("Сверка со статусом 'DECLINED'. Раздел 'Купить в кредит'")
     public static void verifyStatusWithDeclinedByCredit() throws SQLException {
-        val status = DataHelperDB.verifyOrderByPaymentByCredit();
+        val status = verifyOrderByPaymentByCredit();
         assertEquals("DECLINED", status);
     }
 
     @Step("Проверка наличия записей в таблице payment_entity")
-    public static void verifyPayment() throws SQLException {
+    public static String verifyPayment() throws SQLException {
         val runner = new QueryRunner();
         val data = runner.update(getConnectionDB(), checkPayment,
-                new BeanHandler<>(PaymentDataInfo.class));
-        System.out.println(data);
+                new BeanHandler<>(PaymentDataModel.class));
+        return String.valueOf(data);
     }
 
     @Step("Проверка наличия записей в таблице credit_request_entity")
-    public static void verifyCredit() throws SQLException {
+    public static String verifyCredit() throws SQLException {
         val runner = new QueryRunner();
         val data = runner.update(getConnectionDB(), checkCredit,
-                new BeanHandler<>(CreditDataInfo.class));
-        System.out.println(data);
+                new BeanHandler<>(CreditDataModel.class));
+        return String.valueOf(data);
     }
 
     @Step("Проверка наличия записей в таблице order_entity")
-    public static void verifyOrder() throws SQLException {
+    public static String verifyOrder() throws SQLException {
         val runner = new QueryRunner();
         val data = runner.update(getConnectionDB(), checkOrder,
-                new BeanHandler<>(OrderDataInfo.class));
-        System.out.println(data);
+                new BeanHandler<>(OrderDataModel.class));
+        return String.valueOf(data);
     }
 }

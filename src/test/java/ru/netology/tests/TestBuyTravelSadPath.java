@@ -5,149 +5,149 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import ru.netology.data.DataHelperCard;
-import ru.netology.page.InputDataPage;
+import ru.netology.page.BuyingPage;
 
-public class TestBuyTravelSadPath extends TestAfterBefore {
+public class TestBuyTravelSadPath extends TestBase {
     // тестирование с использованием утвержденной карты
     // Раздел 'Купить'
     @Test
     @DisplayName("Поля не заполнены. Раздел 'Купить'")
     void shouldErrorTestOfNullByBuy() {
-        InputDataPage.buy();
-        DataHelperCard.getApprovedCardInfo();
-        InputDataPage.setCardMonth("");
-        InputDataPage.setCardYear("");
-        InputDataPage.setCardOwner("");
-        InputDataPage.setCardCVV("");
-        InputDataPage.clickContinueButton();
-        InputDataPage.checkMessageIncorrectFormat();
-        InputDataPage.checkMessageRequiredField();
+        BuyingPage.buy();
+        BuyingPage.setCardNumber("");
+        BuyingPage.setCardMonth("");
+        BuyingPage.setCardYear("");
+        BuyingPage.setCardOwner("");
+        BuyingPage.setCardCVV("");
+        BuyingPage.clickContinueButton();
+        BuyingPage.checkMessageIncorrectFormat();
+        BuyingPage.checkMessageRequiredField();
     }
 
     @ParameterizedTest
     @CsvFileSource(resources = "/VariantsOfMonth.csv", numLinesToSkip = 1)
     @DisplayName("Неверный ввод в поле 'Месяц', остальные поля заполнены верно. Раздел 'Купить'")
     void shouldErrorTestOfMonthByBuy(String month) {
-        InputDataPage.buy();
-        DataHelperCard.getApprovedCardInfo();
-        InputDataPage.setCardMonth(month);
-        DataHelperCard.getValidYearInfo();
-        DataHelperCard.getValidOwnerInfo();
-        DataHelperCard.getValidCvcInfo();
-        InputDataPage.clickContinueButton();
-        InputDataPage.checkMessageIncorrectFormat();
+        BuyingPage.buy();
+        BuyingPage.setCardNumber(String.valueOf(DataHelperCard.getApprovedCardInfo()));
+        BuyingPage.setCardMonth(month);
+        BuyingPage.setCardYear(String.valueOf(DataHelperCard.getValidYearInfo()));
+        BuyingPage.setCardOwner(String.valueOf(DataHelperCard.getValidOwnerInfo()));
+        BuyingPage.setCardCVV(String.valueOf(DataHelperCard.getValidCvcInfo()));
+        BuyingPage.clickContinueButton();
+        BuyingPage.checkMessageIncorrectFormat();
     }
 
     @ParameterizedTest
     @CsvFileSource(resources = "/VariantsOfYear.csv", numLinesToSkip = 1)
     @DisplayName("Неверный ввод в поле 'Год', остальные поля заполнены верно. Раздел 'Купить'")
     void shouldErrorTestOfYearByBuy(String year) {
-        InputDataPage.buy();
-        DataHelperCard.getApprovedCardInfo();
-        DataHelperCard.getValidMonthInfo();
-        InputDataPage.setCardYear(year);
-        DataHelperCard.getValidOwnerInfo();
-        DataHelperCard.getValidCvcInfo();
-        InputDataPage.clickContinueButton();
-        InputDataPage.checkMessageIncorrectFormat();
+        BuyingPage.buy();
+        BuyingPage.setCardNumber(String.valueOf(DataHelperCard.getApprovedCardInfo()));
+        BuyingPage.setCardMonth(String.valueOf(DataHelperCard.getValidMonthInfo()));
+        BuyingPage.setCardYear(year);
+        BuyingPage.setCardOwner(String.valueOf(DataHelperCard.getValidOwnerInfo()));
+        BuyingPage.setCardCVV(String.valueOf(DataHelperCard.getValidCvcInfo()));
+        BuyingPage.clickContinueButton();
+        BuyingPage.checkMessageIncorrectFormat();
     }
 
     @ParameterizedTest
     @CsvFileSource(resources = "/VariantsOfOwner.csv", numLinesToSkip = 1)
     @DisplayName("Неверный ввод в поле 'Владелец', остальные поля заполнены верно. Раздел 'Купить'")
     void shouldErrorTestOfOwnerByBuy(String owner) {
-        InputDataPage.buy();
-        DataHelperCard.getApprovedCardInfo();
-        DataHelperCard.getValidMonthInfo();
-        DataHelperCard.getValidYearInfo();
-        InputDataPage.setCardOwner(owner);
-        DataHelperCard.getValidCvcInfo();
-        InputDataPage.clickContinueButton();
-        InputDataPage.checkMessageIncorrectFormat();
+        BuyingPage.buy();
+        BuyingPage.setCardNumber(String.valueOf(DataHelperCard.getApprovedCardInfo()));
+        BuyingPage.setCardMonth(String.valueOf(DataHelperCard.getValidMonthInfo()));
+        BuyingPage.setCardYear(String.valueOf(DataHelperCard.getValidYearInfo()));
+        BuyingPage.setCardOwner(owner);
+        BuyingPage.setCardCVV(String.valueOf(DataHelperCard.getValidCvcInfo()));
+        BuyingPage.clickContinueButton();
+        BuyingPage.checkMessageIncorrectFormat();
     }
 
     @ParameterizedTest
     @CsvFileSource(resources = "/VariantsOfCvc.csv", numLinesToSkip = 1)
     @DisplayName("Неверный ввод в поле 'CVC', остальные поля заполнены верно. Раздел 'Купить'")
     void shouldErrorTestOfCvcByBuy(String cvc) {
-        InputDataPage.buy();
-        DataHelperCard.getApprovedCardInfo();
-        DataHelperCard.getValidMonthInfo();
-        DataHelperCard.getValidYearInfo();
-        DataHelperCard.getValidOwnerInfo();
-        InputDataPage.setCardCVV(cvc);
-        InputDataPage.clickContinueButton();
-        InputDataPage.checkMessageIncorrectFormat();
+        BuyingPage.buy();
+        BuyingPage.setCardNumber(String.valueOf(DataHelperCard.getApprovedCardInfo()));
+        BuyingPage.setCardMonth(String.valueOf(DataHelperCard.getValidMonthInfo()));
+        BuyingPage.setCardYear(String.valueOf(DataHelperCard.getValidYearInfo()));
+        BuyingPage.setCardOwner(String.valueOf(DataHelperCard.getValidOwnerInfo()));
+        BuyingPage.setCardCVV(cvc);
+        BuyingPage.clickContinueButton();
+        BuyingPage.checkMessageIncorrectFormat();
     }
 
     // Раздел 'Купить в кредит'
     @Test
     @DisplayName("Поля не заполнены. Раздел 'Купить в кредит'")
     void shouldErrorTestOfNullByBuyInCred() {
-        InputDataPage.buyInCredit();
+        BuyingPage.buyInCredit();
         DataHelperCard.getApprovedCardInfo();
-        InputDataPage.setCardMonth("");
-        InputDataPage.setCardYear("");
-        InputDataPage.setCardOwner("");
-        InputDataPage.setCardCVV("");
-        InputDataPage.clickContinueButton();
-        InputDataPage.checkMessageIncorrectFormat();
-        InputDataPage.checkMessageRequiredField();
+        BuyingPage.setCardMonth("");
+        BuyingPage.setCardYear("");
+        BuyingPage.setCardOwner("");
+        BuyingPage.setCardCVV("");
+        BuyingPage.clickContinueButton();
+        BuyingPage.checkMessageIncorrectFormat();
+        BuyingPage.checkMessageRequiredField();
     }
 
     @ParameterizedTest
     @CsvFileSource(resources = "/VariantsOfMonth.csv", numLinesToSkip = 1)
     @DisplayName("Неверный ввод в поле 'Месяц', остальные поля заполнены верно. Раздел 'Купить'")
     void shouldErrorTestOfMonthByBuyInCred(String month) {
-        InputDataPage.buyInCredit();
-        DataHelperCard.getApprovedCardInfo();
-        InputDataPage.setCardMonth(month);
-        DataHelperCard.getValidYearInfo();
-        DataHelperCard.getValidOwnerInfo();
-        DataHelperCard.getValidCvcInfo();
-        InputDataPage.clickContinueButton();
-        InputDataPage.checkMessageIncorrectFormat();
+        BuyingPage.buyInCredit();
+        BuyingPage.setCardNumber(String.valueOf(DataHelperCard.getApprovedCardInfo()));
+        BuyingPage.setCardMonth(month);
+        BuyingPage.setCardYear(String.valueOf(DataHelperCard.getValidYearInfo()));
+        BuyingPage.setCardOwner(String.valueOf(DataHelperCard.getValidOwnerInfo()));
+        BuyingPage.setCardCVV(String.valueOf(DataHelperCard.getValidCvcInfo()));
+        BuyingPage.clickContinueButton();
+        BuyingPage.checkMessageIncorrectFormat();
     }
 
     @ParameterizedTest
     @CsvFileSource(resources = "/VariantsOfYear.csv", numLinesToSkip = 1)
     @DisplayName("Неверный ввод в поле 'Год', остальные поля заполнены верно. Раздел 'Купить в кредит'")
     void shouldErrorTestOfYearByBuyInCred(String year) {
-        InputDataPage.buyInCredit();
-        DataHelperCard.getApprovedCardInfo();
-        DataHelperCard.getValidMonthInfo();
-        InputDataPage.setCardYear(year);
-        DataHelperCard.getValidOwnerInfo();
-        DataHelperCard.getValidCvcInfo();
-        InputDataPage.clickContinueButton();
-        InputDataPage.checkMessageIncorrectFormat();
+        BuyingPage.buyInCredit();
+        BuyingPage.setCardNumber(String.valueOf(DataHelperCard.getApprovedCardInfo()));
+        BuyingPage.setCardMonth(String.valueOf(DataHelperCard.getValidMonthInfo()));
+        BuyingPage.setCardYear(year);
+        BuyingPage.setCardOwner(String.valueOf(DataHelperCard.getValidOwnerInfo()));
+        BuyingPage.setCardCVV(String.valueOf(DataHelperCard.getValidCvcInfo()));
+        BuyingPage.clickContinueButton();
+        BuyingPage.checkMessageIncorrectFormat();
     }
 
     @ParameterizedTest
     @CsvFileSource(resources = "/VariantsOfOwner.csv", numLinesToSkip = 1)
     @DisplayName("Неверный ввод в поле 'Владелец', остальные поля заполнены верно. Раздел 'Купить в кредит'")
     void shouldErrorTestOfOwnerByBuyInCred(String owner) {
-        InputDataPage.buyInCredit();
-        DataHelperCard.getApprovedCardInfo();
-        DataHelperCard.getValidMonthInfo();
-        DataHelperCard.getValidYearInfo();
-        InputDataPage.setCardOwner(owner);
-        DataHelperCard.getValidCvcInfo();
-        InputDataPage.clickContinueButton();
-        InputDataPage.checkMessageIncorrectFormat();
+        BuyingPage.buyInCredit();
+        BuyingPage.setCardNumber(String.valueOf(DataHelperCard.getApprovedCardInfo()));
+        BuyingPage.setCardMonth(String.valueOf(DataHelperCard.getValidMonthInfo()));
+        BuyingPage.setCardYear(String.valueOf(DataHelperCard.getValidYearInfo()));
+        BuyingPage.setCardOwner(owner);
+        BuyingPage.setCardCVV(String.valueOf(DataHelperCard.getValidCvcInfo()));
+        BuyingPage.clickContinueButton();
+        BuyingPage.checkMessageIncorrectFormat();
     }
 
     @ParameterizedTest
     @CsvFileSource(resources = "/VariantsOfCvc.csv", numLinesToSkip = 1)
     @DisplayName("Неверный ввод в поле 'CVC', остальные поля заполнены верно. Раздел 'Купить в кредит'")
     void shouldErrorTestOfCvcByBuyInCred(String cvc) {
-        InputDataPage.buyInCredit();
-        DataHelperCard.getApprovedCardInfo();
-        DataHelperCard.getValidMonthInfo();
-        DataHelperCard.getValidYearInfo();
-        DataHelperCard.getValidOwnerInfo();
-        InputDataPage.setCardCVV(cvc);
-        InputDataPage.clickContinueButton();
-        InputDataPage.checkMessageIncorrectFormat();
+        BuyingPage.buyInCredit();
+        BuyingPage.setCardNumber(String.valueOf(DataHelperCard.getApprovedCardInfo()));
+        BuyingPage.setCardMonth(String.valueOf(DataHelperCard.getValidMonthInfo()));
+        BuyingPage.setCardYear(String.valueOf(DataHelperCard.getValidYearInfo()));
+        BuyingPage.setCardOwner(String.valueOf(DataHelperCard.getValidOwnerInfo()));
+        BuyingPage.setCardCVV(cvc);
+        BuyingPage.clickContinueButton();
+        BuyingPage.checkMessageIncorrectFormat();
     }
 }
