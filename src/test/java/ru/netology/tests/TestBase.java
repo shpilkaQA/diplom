@@ -7,22 +7,22 @@ import org.junit.jupiter.api.BeforeAll;
 import ru.netology.data.DataHelperDB;
 import ru.netology.page.InputDataPage;
 
+import java.sql.SQLException;
+
 public class TestAfterBefore {
     protected static InputDataPage inputDataPage;
 
     @BeforeAll
-    protected static void setUpPage() {
-        inputDataPage = new InputDataPage();
-    }
     protected static void setUpAll() {
         SelenideLogger.addListener("allure", new AllureSelenide());
+        inputDataPage = new InputDataPage();
     }
 
     @AfterAll
     protected static void tearDownAll() {
         SelenideLogger.removeListener("allure");
     }
-    /*protected void clearAll() throws SQLException {
+    protected void clearAll() throws SQLException {
         DataHelperDB.clearDB();
-    }*/
+    }
 }
