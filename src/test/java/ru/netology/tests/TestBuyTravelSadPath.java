@@ -85,7 +85,7 @@ public class TestBuyTravelSadPath extends TestBase {
     @DisplayName("Поля не заполнены. Раздел 'Купить в кредит'")
     void shouldErrorTestOfNullByBuyInCred() {
         BuyingPage.buyInCredit();
-        DataHelperCard.getApprovedCardInfo();
+        BuyingPage.setCardNumber(String.valueOf(DataHelperCard.getApprovedCardInfo()));
         BuyingPage.setCardMonth("");
         BuyingPage.setCardYear("");
         BuyingPage.setCardOwner("");
