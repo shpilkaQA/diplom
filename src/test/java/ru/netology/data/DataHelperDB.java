@@ -14,11 +14,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DataHelperDB {
     private DataHelperDB() {
     }
 
+    private static Connection conn;
     private static String url = System.getProperty("db.url");
     private static String user = System.getProperty("user");
     private static String password = System.getProperty("password");
@@ -37,20 +39,34 @@ public class DataHelperDB {
             "WHERE credit_request_entity.created IN (SELECT max(credit_request_entity.created) " +
             "FROM credit_request_entity);";
 
-    private static String checkPayment = "SELECT * FROM payment_entity JOIN order_entity " +
-            "on payment_entity.transaction_id = order_entity.payment_id;";
+    private static String checkPayment = "SELECT payment_entity.id, payment_entity.amount, payment_entity.created, " +
+            "payment_entity.status, payment_entity.transaction_id FROM payment_entity " +
+            "JOIN order_entity on transaction_id=payment_id;";
 
-    private static String checkCredit = "SELECT * FROM payment_entity JOIN order_entity " +
-            "on payment_entity.transaction_id = order_entity.payment_id;";
+    private static String checkCredit = "SELECT credit_request_entity.id, credit_request_entity.bank_id, " +
+            "credit_request_entity.created, credit_request_entity.status FROM credit_request_entity JOIN order_entity " +
+            "on credit_request_entity.bank_id = order_entity.credit_id;";
 
     private static String checkOrder = "SELECT * FROM order_entity;";
 
     @Step("Соединение с БД")
-    public static Connection getConnectionDB() throws SQLException {
-        try (
-                val conn = DriverManager.getConnection(url, user, password);
-        ) {
-            return conn;
+    public static Connection getConnectionDB() {
+        if (conn == null) {
+            try {
+                conn = DriverManager.getConnection(url, user, password);
+            } catch (SQLException ex) {
+                System.out.println("Проблема с подключением к БД - " + ex.getMessage());
+            }
+        }
+        return conn;
+    }
+
+    @Step("Закрытие соединения с БД")
+    public static void closeConnectionDB() {
+        try {
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println("Невозможно закрыть соединение" + ex.getMessage());
         }
     }
 
@@ -65,16 +81,14 @@ public class DataHelperDB {
     @Step("Проверка наличия записи в базе о покупке с выводом статуса карты")
     public static String verifyOrderByPayment() throws SQLException {
         val runner = new QueryRunner();
-        val order = runner.update(getConnectionDB(), verificationOrderByPaymentStatus,
-                new ScalarHandler<>());
+        val order = runner.update(getConnectionDB(), verificationOrderByPaymentStatus, new ScalarHandler<>());
         return String.valueOf(order);
     }
 
     @Step("Проверка наличия записи в базе о покупке в кредит с выводом статуса карты")
     public static String verifyOrderByPaymentByCredit() throws SQLException {
         val runner = new QueryRunner();
-        val order = runner.update(getConnectionDB(), verificationOrderByCreditStatus,
-                new ScalarHandler<>());
+        val order = runner.update(getConnectionDB(), verificationOrderByCreditStatus, new ScalarHandler<>());
         return String.valueOf(order);
     }
 
@@ -103,26 +117,23 @@ public class DataHelperDB {
     }
 
     @Step("Проверка наличия записей в таблице payment_entity")
-    public static String verifyPayment() throws SQLException {
+    public static void verifyPayment() throws SQLException {
         val runner = new QueryRunner();
-        val data = runner.update(getConnectionDB(), checkPayment,
-                new BeanHandler<>(PaymentDataModel.class));
-        return String.valueOf(data);
+        val data = runner.update(getConnectionDB(), checkPayment, new BeanHandler<>(PaymentDataModel.class));
+        assertNotNull(data);
     }
 
     @Step("Проверка наличия записей в таблице credit_request_entity")
-    public static String verifyCredit() throws SQLException {
+    public static void verifyCredit() throws SQLException {
         val runner = new QueryRunner();
-        val data = runner.update(getConnectionDB(), checkCredit,
-                new BeanHandler<>(CreditDataModel.class));
-        return String.valueOf(data);
+        val data = runner.update(getConnectionDB(), checkCredit, new BeanHandler<>(CreditDataModel.class));
+        assertNotNull(data);
     }
 
     @Step("Проверка наличия записей в таблице order_entity")
-    public static String verifyOrder() throws SQLException {
+    public static void verifyOrder() throws SQLException {
         val runner = new QueryRunner();
-        val data = runner.update(getConnectionDB(), checkOrder,
-                new BeanHandler<>(OrderDataModel.class));
-        return String.valueOf(data);
+        val data = runner.update(getConnectionDB(), checkOrder, new BeanHandler<>(OrderDataModel.class));
+        assertNotNull(data);
     }
 }

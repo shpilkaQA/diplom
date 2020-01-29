@@ -2,66 +2,36 @@ package ru.netology.data;
 
 import lombok.*;
 
+@Value
 public class DataHelperCard {
-    private DataHelperCard() {
+    private static String month = "08";
+    private static String year = "22";
+    private static String owner = "Vasya Pupkin";
+    private static String cvc = "999";
+    private static String approvedCardNumber = "4444444444444441";
+    private static String declinedCardNumber = "4444444444444442";
+
+    public static String getMonth() {
+        return month;
     }
 
-    // корректные данные
-
-    @Value
-    public static class ValidMonthInfo {
-        private String month;
+    public static String getYear() {
+        return year;
     }
 
-    public static ValidMonthInfo getValidMonthInfo() {
-        return new ValidMonthInfo("08");
+    public static String getOwner() {
+        return owner;
     }
 
-    @Value
-    public static class ValidYearInfo {
-        private String year;
+    public static String getCvc() {
+        return cvc;
     }
 
-    public static ValidYearInfo getValidYearInfo() {
-        return new ValidYearInfo("22");
+    public static String getApprovedCardNumber() {
+        return approvedCardNumber;
     }
 
-    @Value
-    public static class ValidOwnerInfo {
-        private String owner;
+    public static String getDeclinedCardNumber() {
+        return declinedCardNumber;
     }
-
-    public static ValidOwnerInfo getValidOwnerInfo() {
-        return new ValidOwnerInfo("Vasya Pupkin");
-    }
-
-    @Value
-    public static class ValidCvcInfo {
-        private String cvc;
-    }
-
-    public static ValidCvcInfo getValidCvcInfo() {
-        return new ValidCvcInfo("999");
-    }
-
-
-    @Value
-    public static class ApprovedCardInfo {
-        private String approvedCardNumber;
-    }
-
-    public static ApprovedCardInfo getApprovedCardInfo() {
-        return new ApprovedCardInfo("4444444444444441");
-    }
-
-
-    @Value
-    public static class DeclinedCardInfo {
-        private String declinedCardNumber;
-    }
-
-    public static DeclinedCardInfo getDeclinedCardInfo() {
-        return new DeclinedCardInfo("4444444444444442");
-    }
-
 }

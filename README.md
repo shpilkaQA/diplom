@@ -32,16 +32,27 @@ _[Отчёт о проведённой автоматизации](https://githu
    
     ```
     java -Dspring.datasource.url=jdbc:postgresql://192.168.99.100:5432/app -jar artifacts/aqa-shop.jar
-   ```
-  
+   ```  
+    дополнительно можно передать логин и пароль, установленные по умолчанию, добавив
+    ```
+    -Duser=app –Dpassword=pass
+    ```
+
 1. Запустить тесты
     * ***Для работы с MySQL***
        
-    Запуск в mysql установлен по умолчанию
     ```
     gradlew test
     ```
-    
+    Запуск в mysql установлен по умолчанию
+
+    параметры:
+    ```
+    db.url=jdbc:mysql://192.168.99.100:3306/app
+    user=app
+    password=pass
+    ```
+        
     * ***Для работы с Postgres***
     
     ```

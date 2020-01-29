@@ -33,7 +33,7 @@ public class BuyingPage {
             .find(exactText("Поле обязательно для заполнения"));
 
     @Step("Купить")
-    public static void buy() {
+    public static void buyWithCash() {
         open(website);
         buyButton.click();
         payCard.shouldBe(visible);
