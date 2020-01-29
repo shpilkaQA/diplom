@@ -22,7 +22,6 @@ public class TestBuyTravelHappyPath extends TestBase {
         BuyingPage.clickContinueButton();
         BuyingPage.checkMessageSuccessfully();
         DataHelperDB.verifyStatusWithApprovedBuy();
-        DataHelperDB.closeConnectionDB();
     }
 
     @Test
@@ -37,7 +36,6 @@ public class TestBuyTravelHappyPath extends TestBase {
         BuyingPage.clickContinueButton();
         BuyingPage.checkMessageSuccessfully();
         DataHelperDB.verifyStatusWithApprovedByCredit();
-        DataHelperDB.closeConnectionDB();
     }
 
     @Test
@@ -52,7 +50,6 @@ public class TestBuyTravelHappyPath extends TestBase {
         BuyingPage.clickContinueButton();
         BuyingPage.checkMessageError();
         DataHelperDB.verifyStatusWithDeclinedBuy();
-        DataHelperDB.closeConnectionDB();
     }
 
     @Test
@@ -67,22 +64,13 @@ public class TestBuyTravelHappyPath extends TestBase {
         BuyingPage.clickContinueButton();
         BuyingPage.checkMessageError();
         DataHelperDB.verifyStatusWithDeclinedByCredit();
-        DataHelperDB.closeConnectionDB();
     }
 
     @Test
     @DisplayName("Проверка заполнения полей таблиц БД")
     void verifyDB() throws SQLException {
         DataHelperDB.verifyPayment();
-        DataHelperDB.verifyCredit();
         DataHelperDB.verifyOrder();
-        DataHelperDB.closeConnectionDB();
-    }
-
-    @Test
-    @DisplayName("Очистка БД")
-    void clearDB() throws SQLException {
-        DataHelperDB.clearDB();
-        DataHelperDB.closeConnectionDB();
+        DataHelperDB.verifyCredit();
     }
 }

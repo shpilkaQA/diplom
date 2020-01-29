@@ -73,22 +73,22 @@ public class DataHelperDB {
     @Step("Очистка БД")
     public static void clearDB() throws SQLException {
         val runner = new QueryRunner();
-        runner.update(getConnectionDB(), deleteCredit);
         runner.update(getConnectionDB(), deletePayment);
+        runner.update(getConnectionDB(), deleteCredit);
         runner.update(getConnectionDB(), deleteOrder);
     }
 
     @Step("Проверка наличия записи в базе о покупке с выводом статуса карты")
     public static String verifyOrderByPayment() throws SQLException {
         val runner = new QueryRunner();
-        val order = runner.update(getConnectionDB(), verificationOrderByPaymentStatus, new ScalarHandler<>());
+        val order = runner.query(getConnectionDB(), verificationOrderByPaymentStatus, new ScalarHandler<>());
         return String.valueOf(order);
     }
 
     @Step("Проверка наличия записи в базе о покупке в кредит с выводом статуса карты")
     public static String verifyOrderByPaymentByCredit() throws SQLException {
         val runner = new QueryRunner();
-        val order = runner.update(getConnectionDB(), verificationOrderByCreditStatus, new ScalarHandler<>());
+        val order = runner.query(getConnectionDB(), verificationOrderByCreditStatus, new ScalarHandler<>());
         return String.valueOf(order);
     }
 
@@ -119,21 +119,21 @@ public class DataHelperDB {
     @Step("Проверка наличия записей в таблице payment_entity")
     public static void verifyPayment() throws SQLException {
         val runner = new QueryRunner();
-        val data = runner.update(getConnectionDB(), checkPayment, new BeanHandler<>(PaymentDataModel.class));
+        val data = runner.query(getConnectionDB(), checkPayment, new BeanHandler<>(PaymentDataModel.class));
         assertNotNull(data);
     }
 
     @Step("Проверка наличия записей в таблице credit_request_entity")
     public static void verifyCredit() throws SQLException {
         val runner = new QueryRunner();
-        val data = runner.update(getConnectionDB(), checkCredit, new BeanHandler<>(CreditDataModel.class));
+        val data = runner.query(getConnectionDB(), checkCredit, new BeanHandler<>(CreditDataModel.class));
         assertNotNull(data);
     }
 
     @Step("Проверка наличия записей в таблице order_entity")
     public static void verifyOrder() throws SQLException {
         val runner = new QueryRunner();
-        val data = runner.update(getConnectionDB(), checkOrder, new BeanHandler<>(OrderDataModel.class));
+        val data = runner.query(getConnectionDB(), checkOrder, new BeanHandler<>(OrderDataModel.class));
         assertNotNull(data);
     }
 }

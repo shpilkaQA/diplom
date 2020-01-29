@@ -78,12 +78,12 @@ public class BuyingPage {
 
     @Step("Сообщение об успешной операции")
     public static void checkMessageSuccessfully() {
-        messageSuccessfully.waitUntil(visible, 15000);
+        messageSuccessfully.waitUntil(visible, 60000);
     }
 
     @Step("Сообщение об ошибке при совершении операции")
     public static void checkMessageError() {
-        messageError.waitUntil(visible, 15000);
+        messageError.waitUntil(visible, 60000);
     }
 
     @Step("Сообщение о неверно заполненном поле")
