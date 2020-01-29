@@ -59,7 +59,7 @@ _[Отчёт о проведённой автоматизации](https://githu
     gradlew test -Ddb.url=jdbc:postgresql://192.168.99.100:5432/app
     ```
     
-1. Для формирования отчета Allure и его открытия в браузере выполнить команду
+1. Для формирования отчета Allure и его открытия в браузере выполнить команды
     ```
     gradlew allureReport
     gradlew allureServe
