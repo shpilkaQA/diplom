@@ -20,11 +20,11 @@
 
 ## Количество тест-кейсов
 
-* Всего: 34
-* Успешных: 20 *(58,82%)*
-* Неуспешных: 14 *(41,18%)*
+* Всего: 33
+* Успешных: 21 *(63,63%)*
+* Неуспешных: 12 *(36,37%)*
 
-![](https://raw.githubusercontent.com/shpilkaQA/diplom/master/documents/pic/allure_1.jpg)
+![](/documents/pic/allure_1.jpg)
 
 ## Общие рекомендации
 

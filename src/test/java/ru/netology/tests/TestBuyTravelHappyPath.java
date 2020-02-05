@@ -2,6 +2,7 @@ package ru.netology.tests;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.netology.data.AssertsInDataBase;
 import ru.netology.data.DataHelperCard;
 import ru.netology.data.DataHelperDB;
 import ru.netology.page.BuyingPage;
@@ -21,7 +22,7 @@ public class TestBuyTravelHappyPath extends TestBase {
         BuyingPage.setCardCVV(DataHelperCard.getCvc());
         BuyingPage.clickContinueButton();
         BuyingPage.checkMessageSuccessfully();
-        DataHelperDB.verifyStatusWithApprovedBuy();
+        AssertsInDataBase.verifyStatusWithApprovedBuy();
     }
 
     @Test
@@ -35,7 +36,7 @@ public class TestBuyTravelHappyPath extends TestBase {
         BuyingPage.setCardCVV(DataHelperCard.getCvc());
         BuyingPage.clickContinueButton();
         BuyingPage.checkMessageSuccessfully();
-        DataHelperDB.verifyStatusWithApprovedByCredit();
+        AssertsInDataBase.verifyStatusWithApprovedByCredit();
     }
 
     @Test
@@ -49,7 +50,7 @@ public class TestBuyTravelHappyPath extends TestBase {
         BuyingPage.setCardCVV(DataHelperCard.getCvc());
         BuyingPage.clickContinueButton();
         BuyingPage.checkMessageError();
-        DataHelperDB.verifyStatusWithDeclinedBuy();
+        AssertsInDataBase.verifyStatusWithDeclinedBuy();
     }
 
     @Test
@@ -63,14 +64,26 @@ public class TestBuyTravelHappyPath extends TestBase {
         BuyingPage.setCardCVV(DataHelperCard.getCvc());
         BuyingPage.clickContinueButton();
         BuyingPage.checkMessageError();
-        DataHelperDB.verifyStatusWithDeclinedByCredit();
+        AssertsInDataBase.verifyStatusWithDeclinedByCredit();
     }
 
     @Test
     @DisplayName("Проверка заполнения полей таблиц БД")
-    void verifyDB() throws SQLException {
-        DataHelperDB.verifyPayment();
-        DataHelperDB.verifyOrder();
-        DataHelperDB.verifyCredit();
+    void verifyDBNotNull() throws SQLException {
+        DataHelperDB.verifyPaymentNotNull();
+        DataHelperDB.verifyCreditNotNull();
+    }
+
+    @Test
+    @DisplayName("Проверка соединения таблиц по внешнему ключу")
+    void verifyDBId() throws SQLException {
+        DataHelperDB.comparisonIDPaymentAndOrder();
+        DataHelperDB.comparisonIDCreditAndOrder();
+    }
+
+    @Test
+    @DisplayName("Очистка БД")
+    void clearDB() throws SQLException {
+        DataHelperDB.clearDB();
     }
 }

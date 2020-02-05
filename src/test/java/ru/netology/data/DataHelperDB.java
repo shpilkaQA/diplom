@@ -12,6 +12,7 @@ import ru.netology.models.PaymentDataModel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -39,15 +40,21 @@ public class DataHelperDB {
             "WHERE credit_request_entity.created IN (SELECT max(credit_request_entity.created) " +
             "FROM credit_request_entity);";
 
-    private static String checkPayment = "SELECT payment_entity.id, payment_entity.amount, payment_entity.created, " +
-            "payment_entity.status, payment_entity.transaction_id FROM payment_entity " +
-            "JOIN order_entity on transaction_id=payment_id;";
+    private static String checkRowOfCredit = "SELECT * FROM credit_request_entity WHERE created IN (SELECT max(created) " +
+            "FROM credit_request_entity);";
+    private static String checkRowOfOrder = "SELECT * FROM order_entity WHERE created IN (SELECT max(created) " +
+            "FROM order_entity);";
+    private static String checkRowOfPayment = "SELECT * FROM payment_entity WHERE created IN (SELECT max(created) " +
+            "FROM payment_entity);";
 
-    private static String checkCredit = "SELECT credit_request_entity.id, credit_request_entity.bank_id, " +
-            "credit_request_entity.created, credit_request_entity.status FROM credit_request_entity JOIN order_entity " +
-            "on credit_request_entity.bank_id = order_entity.credit_id;";
-
-    private static String checkOrder = "SELECT * FROM order_entity;";
+    private static String checkCreditID = "SELECT bank_id FROM credit_request_entity " +
+            "WHERE created IN (SELECT max(created) FROM credit_request_entity);";
+    private static String checkPaymentID = "SELECT transaction_id FROM payment_entity " +
+            "WHERE created IN (SELECT max(created) FROM payment_entity);";
+    private static String checkOrderIDByPayment = "SELECT payment_id FROM order_entity " +
+            "WHERE created IN (SELECT max(created) FROM order_entity);";
+    private static String checkOrderIDByCredit = "SELECT credit_id FROM order_entity " +
+            "WHERE created IN (SELECT max(created) FROM order_entity);";
 
     @Step("Соединение с БД")
     public static Connection getConnectionDB() {
@@ -92,48 +99,37 @@ public class DataHelperDB {
         return String.valueOf(order);
     }
 
-    @Step("Сверка со статусом 'APPROVED'. Раздел 'Купить'")
-    public static void verifyStatusWithApprovedBuy() throws SQLException {
-        val status = verifyOrderByPayment();
-        assertEquals("APPROVED", status);
-    }
-
-    @Step("Сверка со статусом 'DECLINED'. Раздел 'Купить'")
-    public static void verifyStatusWithDeclinedBuy() throws SQLException {
-        val status = verifyOrderByPayment();
-        assertEquals("DECLINED", status);
-    }
-
-    @Step("Сверка со статусом 'APPROVED'. Раздел 'Купить в кредит'")
-    public static void verifyStatusWithApprovedByCredit() throws SQLException {
-        val status = verifyOrderByPaymentByCredit();
-        assertEquals("APPROVED", status);
-    }
-
-    @Step("Сверка со статусом 'DECLINED'. Раздел 'Купить в кредит'")
-    public static void verifyStatusWithDeclinedByCredit() throws SQLException {
-        val status = verifyOrderByPaymentByCredit();
-        assertEquals("DECLINED", status);
+    @Step("Проверка наличия записей в таблице credit_request_entity")
+    public static void verifyCreditNotNull() throws SQLException {
+        val runner = new QueryRunner();
+        val orderData = runner.query(getConnectionDB(), checkRowOfOrder, new BeanHandler<>(OrderDataModel.class));
+        val creditData = runner.query(getConnectionDB(), checkRowOfCredit, new BeanHandler<>(CreditDataModel.class));
+        assertNotNull(orderData);
+        assertNotNull(creditData);
     }
 
     @Step("Проверка наличия записей в таблице payment_entity")
-    public static void verifyPayment() throws SQLException {
+    public static void verifyPaymentNotNull() throws SQLException {
         val runner = new QueryRunner();
-        val data = runner.query(getConnectionDB(), checkPayment, new BeanHandler<>(PaymentDataModel.class));
-        assertNotNull(data);
+        val orderData = runner.query(getConnectionDB(), checkRowOfOrder, new BeanHandler<>(OrderDataModel.class));
+        val paymentData = runner.query(getConnectionDB(), checkRowOfPayment, new BeanHandler<>(PaymentDataModel.class));
+        assertNotNull(orderData);
+        assertNotNull(paymentData);
     }
 
-    @Step("Проверка наличия записей в таблице credit_request_entity")
-    public static void verifyCredit() throws SQLException {
+    @Step("Сравнение внешних ключей в таблицах payment_entity и order_entity")
+    public static void comparisonIDPaymentAndOrder() throws SQLException {
         val runner = new QueryRunner();
-        val data = runner.query(getConnectionDB(), checkCredit, new BeanHandler<>(CreditDataModel.class));
-        assertNotNull(data);
+        val paymentData = runner.query(getConnectionDB(), checkPaymentID, new ScalarHandler<>());
+        val orderData = runner.query(getConnectionDB(), checkOrderIDByPayment, new ScalarHandler<>());
+        assertEquals(paymentData, orderData, "Payment and Order IDs are not equal");
     }
 
-    @Step("Проверка наличия записей в таблице order_entity")
-    public static void verifyOrder() throws SQLException {
+    @Step("Сравнение внешних ключей в таблицах credit_request_entity и order_entity")
+    public static void comparisonIDCreditAndOrder() throws SQLException {
         val runner = new QueryRunner();
-        val data = runner.query(getConnectionDB(), checkOrder, new BeanHandler<>(OrderDataModel.class));
-        assertNotNull(data);
+        val creditData = runner.query(getConnectionDB(), checkCreditID, new ScalarHandler<>());
+        val orderData = runner.query(getConnectionDB(), checkOrderIDByCredit, new ScalarHandler<>());
+        assertEquals(creditData, orderData, "Credit and Order IDs are not equal");
     }
 }

@@ -2,6 +2,7 @@ package ru.netology.data;
 
 import lombok.*;
 
+// корректные данные
 @Value
 public class DataHelperCard {
     private static String month = "08";

@@ -7,8 +7,6 @@ import org.junit.jupiter.api.BeforeAll;
 import ru.netology.data.DataHelperDB;
 import ru.netology.page.BuyingPage;
 
-import java.sql.SQLException;
-
 public class TestBase {
     protected static BuyingPage buyingPage;
 
@@ -19,10 +17,8 @@ public class TestBase {
     }
 
     @AfterAll
-    protected static void tearDownAll() throws SQLException {
-        SelenideLogger.removeListener("allure");
-        DataHelperDB.getConnectionDB();
-        DataHelperDB.clearDB();
+    protected static void tearDownAll() {
         DataHelperDB.closeConnectionDB();
+        SelenideLogger.removeListener("allure");
     }
 }
